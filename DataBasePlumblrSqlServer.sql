@@ -8,11 +8,11 @@
 use master
 go
 
-if exists (select * from sysdatabases where name='plumblr')
-drop database plumblr
+if exists (select * from sysdatabases where name='webAppplomb')
+drop database webAppplomb
 go
 
-create database plumblr
+create database webAppplomb
 go
 
 
@@ -21,20 +21,23 @@ go
 set dateformat ymd
 go
 												--cd Logiciels/JMerise 
-use "plumblr"									--java -jar JMerise.jar
+use "webAppplomb"									--java -jar JMerise.jar
 go
 
 
 -- specific database types settings
-create type title 		from nvarchar(100)	--libellé
+create type title 		from nvarchar(100)	--libellé // ex itemDefaultName, supplierNaming, toolName, privateNaming
 go
-create type code 		from nvarchar(25) --code article (item)
+create type code 		from nvarchar(25) --code article (item) // not already used
 go
-create type shortword 	from nvarchar(25)  --pour les chaines courtes
+create type shortword 	from nvarchar(25)  --pour les chaines courtes // not already used
 go
-create type longword 	from nvarchar(50)  --pour les chaines moyennes
-go
+create type longword 	from nvarchar(50)  --pour les chaines moyennes ex : itemClass, site & supplierName, site & supplierTown, contactName(s), toolStoragePlace, employee Surname & FirstName,
+go 										   --	
 create type sentence 	from nvarchar(100) --pour les chaines longues
+go
+create type text 		from nvarchar(250) -- pour les commentaires
+
 go
 create type courtesy 	from nvarchar(15)  --pour le titre de civilité."  	--'M.', 'Me.', 'Mme.', 'Mlle.', 'Dr.', ...
 go
@@ -73,12 +76,12 @@ create table supplier -- fournisseur
 	,constraint pk_supplier primary key (supplier_id)
 
 	,supplier_name		longword
-	,supplier_adress	longword
+	,supplier_adress	sentence
 
 	,supplier_town		longword
 	,supplier_phone		phone
 	,supplier_fax		phone
-	,supplier_www		longword
+	,supplier_www		sentence
 	
 	,supplier_contactName		longword
 	,supplier_contactCourtesy 	courtesy
@@ -186,7 +189,7 @@ create table site
 	,site_viewable		boolean
 
 	,site_name			longword
-	,site_adress		longword
+	,site_adress		sentence
 	,site_town			longword
 	,site_zipcode		zipcode
 
@@ -202,7 +205,7 @@ create table site
 	,site_contactName		longword
 	,site_contactPhone		phone
 	
-	,site_customer			longword
+	,site_customerName		longword
 	
 	,site_shell				longword 	-- gros oeuvre
 	,site_masterCourtesy 	courtesy
@@ -260,7 +263,7 @@ create table listHead 		-- mémoListe
 	,list_comment		sentence
 	,list_status		nvarchar(25)  /*pour les chaines courtes check (list_status in ( 'envoyée', 'réceptionnée', 'complète', 'partielle', 'refusée' ))*/
 						-- ou 	enum ('envoyée', 'réceptionnée', 'complète', 'partielle', 'refusée')
-						-- le status peut être calculé avec listLine_quantity et prov_ided
+						-- le status peut être calculé avec listLine_quantity et provided
 	,list_emailingDate		date
 	,list_receiptDate		date
 	,list_packingEndDate	date
@@ -328,10 +331,10 @@ create table orderHead 		-- order
 	,order_sendDate		date
 
 	,order_delivPlace	longword
-	,order_comment		sentence
+	,order_comment		sentence -- or text
 --	,order_status		nvarchar(25)go  /*pour les chaines courtes*/ check (order_status in ( 'envoyée', 'réceptionnée', 'complète', 'partielle', 'refusée' ))
 				-- ou 	enum ('envoyée', 'réceptionnée', 'complète', 'partielle', 'refusée')
-				-- le status peut être calculé avec orderLine_quantity et prov_ided
+				-- le status peut être calculé avec orderLine_quantity et provided
 	,sender_id	foreign_id	-- rédacteur / resp de la commande
 	,constraint pk_order_sender foreign key (sender_id)
 	 references employee(employee_id)
