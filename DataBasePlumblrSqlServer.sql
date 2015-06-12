@@ -225,8 +225,8 @@ create table batch 	-- = lot la traduction la plus approppriée serait "item" ma
 	(batch_id		primary_id identity(1,1)	
 	,constraint pk_batch primary key (batch_id)
 	
-	,batch_number 	int   not null -- le site global correspond au batch_number = 00
-	,batch_field	nvarchar(25)  /*pour les chaines courtes*/	-- plomberie ou gaz par exemple // le site correspond batch "global" ou 
+	,batch_number 	shortword   not null -- le site global correspond au batch_number = 00
+	,batch_field	shortword  /*pour les chaines courtes*/	-- plomberie ou gaz par exemple // le site correspond batch "global" ou 
 								-- "ensmble" ou "total" ou "aggregate" ...  à définir
 	,site_id 		foreign_id
 	,constraint fk_batch_site foreign key (site_id) 
