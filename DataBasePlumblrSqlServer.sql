@@ -1,3 +1,4 @@
+
 ----------------------------------------------
 --				DOT  P L U M B L R			--
 ----------------------------------------------
@@ -36,7 +37,7 @@ create type longword 	from nvarchar(50)  --pour les chaines moyennes ex : itemCl
 go 										   --	
 create type sentence 	from nvarchar(100) --pour les chaines longues
 go
-create type text 		from nvarchar(250) -- pour les commentaires
+--create type text 		from nvarchar(250) -- pour les commentaires
 
 go
 create type courtesy 	from nvarchar(15)  --pour le titre de civilité."  	--'M.', 'Me.', 'Mme.', 'Mlle.', 'Dr.', ...
@@ -77,8 +78,9 @@ create table supplier -- fournisseur
 
 	,supplier_name		longword
 	,supplier_adress	sentence
-
+	,supplier_zipcode	zipcode
 	,supplier_town		longword
+
 	,supplier_phone		phone
 	,supplier_fax		phone
 	,supplier_www		sentence
@@ -356,7 +358,7 @@ create table orderLine	-- item de ligne
 
 	,measUnit		nvarchar(25)  /*pour les chaines courtes* check (orderline_measUnit in ('mètre(s)' 'unité(s)' 'kg' 'boîtes' '...'))*/
 	,quantity		int
-	,prov_ided		int
+	,provided		int
 
 	,order_id 			foreign_id
 	,constraint  fk_order foreign key (order_id)
@@ -368,4 +370,5 @@ create table orderLine	-- item de ligne
 
 	) 
 	go
+
 
